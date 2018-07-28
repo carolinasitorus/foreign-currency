@@ -9,4 +9,4 @@ class ForeignCurrency(models.Model):
         db_table = 'foreign_currencies'
 
     def __str__(self):
-        return self.currency
+        return self.currency_name
