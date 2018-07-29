@@ -19,4 +19,8 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('foreign-currency/', include('foreigncurrencyapp.urls')),
+    path('api/v1/foreign-currencies', include('foreigncurrencyapi.urls')),
+    path('api/v1/currencies', include('Currency.urls')),
+    path('api/v1/currency-exchange-rates', include('CurrencyExchangeRate.urls')),
 ]
+
