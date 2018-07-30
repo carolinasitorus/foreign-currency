@@ -17,7 +17,7 @@ class CurrencyPairList(APIView):
         return paginator.get_paginated_response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = CurrencySerializer(data=request.data)
+        serializer = CurrencyPairSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
