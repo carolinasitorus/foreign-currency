@@ -20,3 +20,9 @@ class CurrencyExchangeRateRepository:
 
     def getLatestExchangeRate():
     	return CurrencyExchangeRate.objects.aggregate(Max('exchange_date'));
+
+    def getLatestExchangeRate(exchange_date):
+    	# return CurrencyExchangeRate.objects.filter(exchange_date__date=exchange_date).annotate(max_date=Max('exchange_date'))
+    	return CurrencyExchangeRate.objects.\
+    	    filter(exchange_date__date=exchange_date).\
+    	    annotate(max_date=Max('exchange_date'))

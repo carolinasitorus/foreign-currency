@@ -1,6 +1,6 @@
 from .models import CurrencyExchangeRate
 from .repositories import CurrencyExchangeRateRepository
-from .serializers import CurrencyExchangeRateSerializer
+from .serializers import CurrencyExchangeRateSerializer, CurrencyExchangeRateByExchangeDateSerializer
 from datetime import datetime, date, time
 from django.http import Http404
 from rest_framework.views import APIView
@@ -49,3 +49,11 @@ class CurrencyExchangeRateDetail(APIView):
         currency = self.get_object(pk)
         currency.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class CurrencyExchangeRateByExchangeDate(APIView):
+    def get(self, request, exchange_date, format=None):
+        paginator = PageNumberPagination()
+        queryset =  CurrencyExchangeRateRepository.getLatestExchangeRate(exchange_date)
+        context = paginator.paginate_queryset(queryset, request)
+        serializer = CurrencyExchangeRateByExchangeDateSerializer(context, many=True)
+        return paginator.get_paginated_response(serializer.data)
