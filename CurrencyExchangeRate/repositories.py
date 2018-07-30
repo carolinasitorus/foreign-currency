@@ -5,7 +5,7 @@ from datetime import date, datetime, timedelta
 class CurrencyExchangeRateRepository:
 
     def getCurrencyExchangeRates():
-        return CurrencyExchangeRate.objects.all()
+        return CurrencyExchangeRate.objects.exclude(deleted_at__isnull=False)
 
     def getCurrencyExchangeRateBylastDays(daysParam):
         return CurrencyExchangeRate.objects.\

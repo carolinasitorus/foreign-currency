@@ -3,11 +3,11 @@ from .models import CurrencyExchangeRate
 
 
 class CurrencyExchangeRateSerializer(serializers.Serializer):
-    # aha = 'aha'
-    # exchange_date = serializers.DateTimeField(required=True)
+    exchange_date = serializers.DateTimeField(required=True)
     from_id = serializers.StringRelatedField()
     to_id = serializers.StringRelatedField()
-    # avg_rate = serializers.FloatField()
+    to_id = serializers.StringRelatedField()
+    rate = serializers.FloatField()
     deleted_at = serializers.DateTimeField(required=False)
 
     def create(self, validated_data):
