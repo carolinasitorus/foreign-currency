@@ -6,7 +6,6 @@ class CurrencyExchangeRateSerializer(serializers.Serializer):
     exchange_date = serializers.DateTimeField(required=True)
     from_id = serializers.StringRelatedField()
     to_id = serializers.StringRelatedField()
-    to_id = serializers.StringRelatedField()
     rate = serializers.FloatField()
     deleted_at = serializers.DateTimeField(required=False)
 
