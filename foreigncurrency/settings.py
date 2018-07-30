@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'Currency',
     'CurrencyExchangeRate',
     'CurrencyPair',
-    'foreigncurrencyapi',
-    'foreigncurrencyapp',
     'rest_framework'
 ]
 
