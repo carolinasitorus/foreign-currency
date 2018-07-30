@@ -1,16 +1,20 @@
 from .models import Currency
+from .repositories import CurrencyRepository
 from .serializers import CurrencySerializer
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 
 class CurrencyList(APIView):
     def get(self, request, format=None):
-        currencies = Currency.objects.all()
-        serializer = CurrencySerializer(currencies, many=True)
-        return Response(serializer.data)
+        paginator = PageNumberPagination()
+        queryset = CurrencyRepository.getCurrencies()
+        context = paginator.paginate_queryset(queryset, request)
+        serializer = CurrencySerializer(context, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     def post(self, request, format=None):
         serializer = CurrencySerializer(data=request.data)

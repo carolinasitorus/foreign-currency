@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Currency',
     'CurrencyExchangeRate',
-    'foreigncurrencyapi',
-    'foreigncurrencyapp',
+    'CurrencyPair',
     'rest_framework'
 ]
 

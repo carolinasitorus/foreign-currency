@@ -1,23 +1,21 @@
 from rest_framework import serializers
 from .models import CurrencyExchangeRate
+from CurrencyPair.serializers import CurrencyPairSerializer
 
+class CurrencyExchangeRateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=CurrencyExchangeRate
+        fields=('id','currency_pair_id','exchange_date', 'rate', 'deleted_at')
 
-class CurrencyExchangeRateSerializer(serializers.Serializer):
-    # aha = 'aha'
-    # exchange_date = serializers.DateTimeField(required=True)
-    from_id = serializers.StringRelatedField()
-    to_id = serializers.StringRelatedField()
-    # avg_rate = serializers.FloatField()
-    deleted_at = serializers.DateTimeField(required=False)
+    def to_representation(self, instance):
+        self.fields['currency_pair_id'] =  CurrencyPairSerializer(read_only=True)
+        return super(CurrencyExchangeRateSerializer, self).to_representation(instance)
 
-    def create(self, validated_data):
-        return CurrencyExchangeRate.objects.create(**validated_data)
+class CurrencyExchangeRateByExchangeDateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=CurrencyExchangeRate
+        fields=('id','currency_pair_id','exchange_date', 'rate', 'deleted_at')
 
-    def update(self, instance, validated_data):
-        instance.date = validated_data.get('exchange_date', instance.date)
-        instance.from_id = validated_data.get('from_id', instance.from_id)
-        instance.to_id = validated_data.get('to_id', instance.to_id)
-        instance.rate = validated_data.get('rate', instance.rate)
-        instance.deleted_at = validated_data.get('deleted_at', instance.deleted_at)
-        instance.save()
-        return instance
+    def to_representation(self, instance):
+        self.fields['currency_pair_id'] =  CurrencyPairSerializer(read_only=True)
+        return super(CurrencyExchangeRateByExchangeDateSerializer, self).to_representation(instance)
