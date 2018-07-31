@@ -142,5 +142,10 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    'PAGINATE_BY_PARAM': 'page_size'
+    'PAGINATE_BY_PARAM': 'page_size',
+    'TEST_REQUEST_RENDERER_CLASSES': (
+        'rest_framework.renderers.MultiPartRenderer',
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.TemplateHTMLRenderer'
+    )
 }
