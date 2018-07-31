@@ -7,7 +7,7 @@ class ModelTestCase(TestCase):
         self.currency_name = "IDR"
         self.currency = Currency(name=self.currency_name)
 
-    def test_model_can_create_a_bucketlist(self):
+    def testModelCanCreateCurrency(self):
         old_count = Currency.objects.count()
         self.currency.save()
         new_count = Currency.objects.count()
