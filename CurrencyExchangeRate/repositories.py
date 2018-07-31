@@ -7,22 +7,30 @@ class CurrencyExchangeRateRepository:
     def getCurrencyExchangeRates():
         return CurrencyExchangeRate.objects.exclude(deleted_at__isnull=False)
 
-    def getCurrencyExchangeRateBylastDays(daysParam):
+    def getCurrencyExchangeRateBylastDays(currencyPairId, currentDate, daysParam):
+        currentDateMaxDatetime = datetime.combine(currentDate, datetime.max.time());
+        currentDateMinDatetime = datetime.combine(currentDate, datetime.min.time());
         return CurrencyExchangeRate.objects.\
-            filter(exchange_date__lte=datetime.today(), exchange_date__gt=datetime.today()-timedelta(days=daysParam)).\
-            values('from_id', 'to_id', 'exchange_date')
+            filter(currency_pair_id =  currencyPairId).\
+            filter(exchange_date__lte = currentDateMaxDatetime, exchange_date__gt = currentDateMinDatetime - timedelta(days = daysParam)).\
+            values('currency_pair_id').\
+            annotate(days_rate_avg=Avg('rate'))
 
     def getCurrencyExchangeRateAverageByDate():
     	return CurrencyExchangeRate.objects.\
     	    filter(exchange_date__date=date.today()).\
-    	    values('from_id', 'to_id').\
+    	    values('currency_pair_id').\
     	    annotate(avg_rate=Avg('rate'))
 
     def getLatestExchangeRate():
     	return CurrencyExchangeRate.objects.aggregate(Max('exchange_date'));
 
     def getLatestExchangeRate(exchange_date):
-    	# return CurrencyExchangeRate.objects.filter(exchange_date__date=exchange_date).annotate(max_date=Max('exchange_date'))
-    	return CurrencyExchangeRate.objects.\
-    	    filter(exchange_date__date=exchange_date).\
-    	    annotate(max_date=Max('exchange_date'))
+        return CurrencyExchangeRate.objects.filter(exchange_date__date=exchange_date).\
+            values('currency_pair_id').\
+            annotate(latest_rate=Max('exchange_date'))
+
+    def getRateByCurrencyPairIdByExchangeDate(currencyPairId, exchangeDate):
+        return CurrencyExchangeRate.objects.filter(currency_pair_id=currencyPairId).\
+            filter(exchange_date=exchangeDate).\
+            first()
