@@ -16,6 +16,15 @@ class CurrencyExchangeRateRepository:
             values('currency_pair_id').\
             annotate(days_rate_avg=Avg('rate'))
 
+    def getCurrencyExchangeRateByDate(currentDate, daysParam):
+        currentDateMaxDatetime = datetime.combine(currentDate, datetime.max.time());
+        currentDateMinDatetime = datetime.combine(currentDate, datetime.min.time());
+        return CurrencyExchangeRate.objects.\
+            filter(currency_pair_id =  currencyPairId).\
+            filter(exchange_date__lte = currentDateMaxDatetime, exchange_date__gt = currentDateMinDatetime - timedelta(days = daysParam)).\
+            values('currency_pair_id').\
+            annotate(days_rate_avg=Avg('rate'))
+
     def getCurrencyExchangeRateAverageByDate():
     	return CurrencyExchangeRate.objects.\
     	    filter(exchange_date__date=date.today()).\

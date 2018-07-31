@@ -1,6 +1,7 @@
 from .models import Currency
 from .repositories import CurrencyRepository
 from .serializers import CurrencySerializer
+from datetime import datetime
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.views import APIView
@@ -45,5 +46,7 @@ class CurrencyDetail(APIView):
 
     def delete(self, request, pk, format=None):
         currency = self.get_object(pk)
-        currency.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        currency.deleted_at = datetime.now()
+        currency.save()
+        serializer = CurrencySerializer(currency)
+        return Response(serializer.data)

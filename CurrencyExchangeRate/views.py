@@ -67,14 +67,14 @@ class CurrencyExchangeRateTrend(APIView):
         serializer =  CurrencyExchangeRateTrendSerializer(context, many=True)
         return paginator.get_paginated_response(serializer.data)
 
-class SectionViewSet(ModelViewSet):
+class CurrencyExchangeRateViewSet(ModelViewSet):
     serializer_class = SectionSerializer
     def get_queryset(self):
         currencyPairId = self.kwargs['currency_pair_id']
         return CurrencyExchangeRateRepository.getLatestExchangeRateByCurrencyPairId(currencyPairId)
 
     def get_serializer_context(self):
-        context = super(SectionViewSet, self).get_serializer_context()
+        context = super(CurrencyExchangeRateViewSet, self).get_serializer_context()
         currencyPairId = self.kwargs['currency_pair_id'] 
         rates = CurrencyExchangeRateRepository.getLatestExchangeRateByCurrencyPairId(currencyPairId)
         avg = self.getAverage(rates)
@@ -97,7 +97,11 @@ class SectionViewSet(ModelViewSet):
         for rateObj in rates:
             temp = temp + (rateObj.rate - avg) * (rateObj.rate - avg)
             rowsTotal = rowsTotal + 1
-        return temp/(rowsTotal-1)
+        try:
+            variance = temp/(rowsTotal-1)
+        except ZeroDivisionError:
+            variance =0
+        return variance
 
 
 
