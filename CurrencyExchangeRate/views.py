@@ -57,3 +57,6 @@ class CurrencyExchangeRateByExchangeDate(APIView):
         context = paginator.paginate_queryset(queryset, request)
         serializer = CurrencyExchangeRateByExchangeDateSerializer(context, many=True)
         return paginator.get_paginated_response(serializer.data)
+        # currencies = CurrencyExchangeRateRepository.getCurrencyExchangeRateBylastDays(1, '2018-07-31', 7)
+        # serializer = CurrencyExchangeRateByExchangeDateSerializer(currencies, many=True)
+        # return Response(serializer.data)
