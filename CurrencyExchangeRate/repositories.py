@@ -1,5 +1,5 @@
 from .models import CurrencyExchangeRate
-from django.db.models import Avg, Max, Q
+from django.db.models import Avg, Count, Max, Q
 from datetime import date, datetime, timedelta
 
 class CurrencyExchangeRateRepository:
@@ -34,3 +34,8 @@ class CurrencyExchangeRateRepository:
         return CurrencyExchangeRate.objects.filter(currency_pair_id=currencyPairId).\
             filter(exchange_date=exchangeDate).\
             first()
+
+    def getLatestExchangeRateByCurrencyPairId(currencyPairId):
+        return CurrencyExchangeRate.objects.\
+            filter(currency_pair_id = currencyPairId).\
+            order_by('-exchange_date')[:7]

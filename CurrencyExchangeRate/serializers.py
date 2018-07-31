@@ -56,3 +56,40 @@ class CurrencyExchangeRateByExchangeDateSerializer(serializers.ModelSerializer):
     class Meta:
         model=CurrencyExchangeRate
         fields=('id','currency_from_name', 'currency_to_name', 'rate', 'date', 'avg_rate_of_7_latest_days')
+
+class CurrencyExchangeRateTrendSerializer(serializers.ModelSerializer):
+    date = serializers.SerializerMethodField('getExchangeDate')
+
+    def getExchangeDate(self, rates):
+        return rates.exchange_date.date()
+
+    class Meta:
+        model=CurrencyExchangeRate
+        fields=('date', 'rate')
+
+class SectionSerializer(serializers.ModelSerializer):
+    avg = serializers.SerializerMethodField('getAvg')
+    currency_from = serializers.SerializerMethodField('getCurrencyFromName')
+    currency_to = serializers.SerializerMethodField('getCurrencyToName')
+    date = serializers.SerializerMethodField('getDate')
+    variance = serializers.SerializerMethodField('getVariance')
+    
+    def getAvg(self, instance):
+        return self.context['avg']
+
+    def getCurrencyFromName(self, rates):
+        return rates.currency_pair_id.from_id.name
+
+    def getCurrencyToName(self, rates):
+        return rates.currency_pair_id.to_id.name
+
+    def getDate(selft, rates):
+        return rates.exchange_date.date()
+
+    def getVariance(self, instance):
+        return self.context['variance']
+
+    class Meta:
+        model = CurrencyExchangeRate
+        fields=('id', 'currency_from', 'currency_to', 'rate', 'date', 'avg', 'variance')
+
