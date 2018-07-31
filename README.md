@@ -1,4 +1,4 @@
-# foreign-currency
+# foreign-currency-api
 
 ## Documentation
 1. Dokumentasi Struktur database dapat dilihat pada Documentation/Database Documentation.docx
